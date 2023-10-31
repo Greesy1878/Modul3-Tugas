@@ -1,0 +1,107 @@
+# Dictionary data film
+movies = [
+    {"title": "Avengers: Endgame", "year": 2019, "rating": 8.4, "genre": "Action"},
+    {"title": "Parasite", "year": 2019, "rating": 8.6, "genre": "Drama"},
+    {"title": "Nomadland", "year": 2020, "rating": 7.3, "genre": "Drama"},
+    {"title": "Dune", "year": 2021, "rating": 7.9, "genre": "Sci-Fi"},
+    {"title": "Spider-Man: No Way Home", "year": 2021,
+        "rating": 7.6, "genre": "Action"},
+    {"title": "The French Dispatch", "year": 2021, "rating": 7.0, "genre": "Comedy"},
+    {"title": "A Quiet Place Part II", "year": 2020,
+        "rating": 7.4, "genre": "Horror"},
+    {"title": "No Time to Die", "year": 2021, "rating": 6.8, "genre": "Action"},
+    {"title": "The Power of the Dog", "year": 2021, "rating": 7.3, "genre": "Drama"},
+    {"title": "Eternals", "year": 2021, "rating": 6.4, "genre": "Action"},
+    {"title": "The Last Duel", "year": 2021, "rating": 7.0, "genre": "Drama"},
+]
+
+# Fungsi a: Menampilkan data film yang dipilih
+
+
+def show_movie_data(movie):
+    return {"title": movie["title"], "year": movie["year"], "rating": movie["rating"], "genre": movie["genre"]}
+
+# Fungsi b: Jumlah film berdasarkan genre
+
+
+def count_movies_by_genre():
+    genre_count = {}
+    for movie in movies:
+        genre = movie["genre"]
+        if genre in genre_count:
+            genre_count[genre] += 1
+        else:
+            genre_count[genre] = 1
+    return genre_count
+
+# Fungsi c: Menemukan film dengan rating tertinggi
+
+
+def highest_rated_movie():
+    return max(movies, key=lambda movie: movie["rating"])
+
+# Fungsi d: Rata-rata rating film berdasarkan tahun rilis
+
+
+def average_rating_by_year():
+    year_ratings = {}
+    for movie in movies:
+        year = movie["year"]
+        rating = movie["rating"]
+        if year in year_ratings:
+            year_ratings[year].append(rating)
+        else:
+            year_ratings[year] = [rating]
+
+    result = {}
+    years = range(min(year_ratings.keys()), max(year_ratings.keys()) + 1)
+    for year in years:
+        avg_rating = sum(year_ratings.get(
+            year, [0])) / len(year_ratings.get(year, [1]))
+        result[year] = avg_rating
+
+    return result
+
+
+# Tampilan menu
+while True:
+    print("\nPilih tugas yang ingin dilakukan:")
+    print("1. Menampilkan jumlah film berdasarkan genre")
+    print("2. Menampilkan rata-rata rating film berdasarkan tahun rilis")
+    print("3. Menemukan film dengan rating tertinggi")
+    print("4. Cari judul film untuk menampilkan informasi rating, tahun rilis, dan genre")
+    print("5. Selesai")
+
+    choice = input("Masukkan nomor tugas (1/2/3/4/5): ")
+
+    if choice == "1":
+        genre_counts = count_movies_by_genre()
+        for genre, count in genre_counts.items():
+            print(f"Jumlah film dengan genre '{genre}': {count}")
+
+    elif choice == "2":
+        year_ratings = average_rating_by_year()
+        print("Rata-rata Rating Film Berdasarkan Tahun Rilis:")
+        for year, avg_rating in sorted(year_ratings.items()):
+            print(f"{year}: {avg_rating:.2f}")
+
+    elif choice == "3":
+        top_rated_movie = highest_rated_movie()
+        print("Film dengan rating tertinggi:")
+        print(show_movie_data(top_rated_movie))
+
+    elif choice == "4":
+        title_to_show = input("Masukkan judul film yang ingin ditampilkan: ")
+        selected_movie = next(
+            (movie for movie in movies if movie["title"] == title_to_show), None)
+        if selected_movie:
+            result = show_movie_data(selected_movie)
+            print(result)
+        else:
+            print("Film tidak ditemukan.")
+
+    elif choice == "5":
+        break
+
+    else:
+        print("Pilihan tidak valid. Silakan masukkan nomor tugas yang valid.")
